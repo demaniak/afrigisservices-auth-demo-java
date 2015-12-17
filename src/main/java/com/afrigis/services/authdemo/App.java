@@ -13,7 +13,10 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 /**
- * Hello world!
+ * <p>
+ * Demonstrates how to construct a valid URL for calling AfriGIS Services, as well
+ * as calculating HMACs.
+ * </p>
  *
  */
 public class App {
@@ -28,6 +31,9 @@ public class App {
 
     private static final int ONE_SECOND = 1000;
     
+    /**
+     * To be replaced with stronger algorithm in the near future.
+     */
     private static final String HMAC_SHA1_ALGORITHM = "HmacSHA1";
 
     public static void main(String[] args) {
