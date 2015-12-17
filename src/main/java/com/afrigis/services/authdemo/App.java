@@ -64,6 +64,9 @@ public class App {
         }
         
         String request = baseUrl + webservice + "/" + key + "/" + authCode;
+        if (useTimestamp) {
+            request = request + "/" + timestamp;
+        }
         request = request + "/?" + queryString;
         
        return request;
