@@ -22,7 +22,7 @@ public class App {
     private String secret = "<YOUR SECRET>";
 
     private String webservice = "intiendols.basic.geocode.address";
-    private Boolean useTrial = true;
+    private Boolean useTrial = false;
     private Boolean useTimestamp = true;
     private final String baseUrl = "https://saas.afrigis.co.za/rest/2/";
 
