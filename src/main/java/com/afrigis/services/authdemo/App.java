@@ -96,6 +96,8 @@ public class App {
 
             byte[] rawHmac = mac.doFinal(message.getBytes("ASCII"));
             hmac = new String(Base64.encodeBase64(rawHmac), "UTF-8");
+            
+            hmac = fixHmac (hmac);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,5 +114,23 @@ public class App {
             e.printStackTrace();
             return param;
         }
+    }
+    
+    /**
+     * Fixes up the HMAC String by replacing / and + with _ and - respectively.
+     * Also removes pointless padding =
+     * 
+     * @param base64Hmac
+     *            The HMAC String to fix up
+     * @return Fixed HMAC
+     */
+    private String fixHmac(String base64Hmac) {
+        String hmac2 = base64Hmac;
+
+        hmac2 = hmac2.replace("/", "_")
+        .replace("+", "-")
+        .replace("=", "");
+
+        return hmac2;
     }
 }
