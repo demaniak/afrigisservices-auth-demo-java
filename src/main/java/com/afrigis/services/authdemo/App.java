@@ -21,9 +21,18 @@ import org.apache.commons.codec.binary.Base64;
  */
 public class App {
     private static final Charset UTF8 = Charset.forName("UTF-8");
+    
+    /**
+     * You can obtain a key and secret from <a href="https://developers.afrigis.co.za/sign-up/">AfriGIS</a>
+     */
     private String key = "<YOUR KEY>";
     private String secret = "<YOUR SECRET>";
 
+    /**
+     * <p>
+     * See https://developers.afrigis.co.za/ for more information
+     * </p>
+     */
     private String webservice = "intiendols.basic.geocode.address";
     private Boolean useTrial = false;
     private Boolean useTimestamp = true;
@@ -48,6 +57,7 @@ public class App {
                 + urlEncode(searchTextFromUser);
         
         String message = queryString + "/" + webservice + "/" + key;
+        
         Long timestamp = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
                 .getTimeInMillis() / ONE_SECOND;
         
