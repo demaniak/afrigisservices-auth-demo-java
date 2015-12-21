@@ -1,3 +1,21 @@
+/*
+ *    AfriGIS Services Auth Demo
+ *    Copyright (C) 2015  AfriGIS (Pty) Ltd
+ *
+ *    This program is free software; you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation; either version 2 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License along
+ *    with this program; if not, write to the Free Software Foundation, Inc.,
+ *    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
 package com.afrigis.services.authdemo;
 
 import java.io.UnsupportedEncodingException;
@@ -14,16 +32,17 @@ import org.apache.commons.codec.binary.Base64;
 
 /**
  * <p>
- * Demonstrates how to construct a valid URL for calling AfriGIS Services, as well
- * as calculating HMACs.
+ * Demonstrates how to construct a valid URL for calling AfriGIS Services, as
+ * well as calculating HMACs.
  * </p>
  *
  */
 public class SampleApp {
     private static final Charset UTF8 = Charset.forName("UTF-8");
-    
+
     /**
-     * You can obtain a key and secret from <a href="https://developers.afrigis.co.za/sign-up/">AfriGIS</a>
+     * You can obtain a key and secret from
+     * <a href="https://developers.afrigis.co.za/sign-up/">AfriGIS</a>
      */
     private String key = "<YOUR KEY>";
     private String secret = "<YOUR SECRET>";
@@ -39,7 +58,7 @@ public class SampleApp {
     private final String baseUrl = "https://saas.afrigis.co.za/rest/2/";
 
     private static final int ONE_SECOND = 1000;
-    
+
     /**
      * To be replaced with stronger algorithm in the near future.
      */
@@ -55,33 +74,33 @@ public class SampleApp {
     private String buildUrl(String searchTextFromUser) {
         String queryString = "ils_result_count=1&ils_location="
                 + urlEncode(searchTextFromUser);
-        
+
         String message = queryString + "/" + webservice + "/" + key;
-        
+
         Long timestamp = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
                 .getTimeInMillis() / ONE_SECOND;
-        
+
         if (useTimestamp) {
             message = message + "/" + timestamp;
         }
-        
+
         String authCode;
-        
+
         if (useTrial) {
             authCode = "trial";
         } else {
-            authCode = getHmac(key,secret.getBytes(UTF8),message);
+            authCode = getHmac(key, secret.getBytes(UTF8), message);
         }
-        
+
         String request = baseUrl + webservice + "/" + key + "/" + authCode;
         if (useTimestamp) {
             request = request + "/" + timestamp;
         }
         request = request + "/?" + queryString;
-        
-       return request;
+
+        return request;
     }
-    
+
     /**
      * 
      * @param message
@@ -91,11 +110,12 @@ public class SampleApp {
      * @see SecretKeySpec
      * @see Mac
      */
-    protected String getHmac(String saasClient, byte [] sharedKey,String message) {
+    protected String getHmac(String saasClient, byte[] sharedKey,
+            String message) {
         String hmac;
         try {
 
-            //Generating HMAC over string 
+            // Generating HMAC over string
             SecretKey signingKey = new SecretKeySpec(
                     sharedKey == null || sharedKey.length <= 0
                             ? saasClient.getBytes(UTF8) : sharedKey,
@@ -106,8 +126,8 @@ public class SampleApp {
 
             byte[] rawHmac = mac.doFinal(message.getBytes("ASCII"));
             hmac = new String(Base64.encodeBase64(rawHmac), "UTF-8");
-            
-            hmac = fixHmac (hmac);
+
+            hmac = fixHmac(hmac);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -125,7 +145,7 @@ public class SampleApp {
             return param;
         }
     }
-    
+
     /**
      * Fixes up the HMAC String by replacing / and + with _ and - respectively.
      * Also removes pointless padding =
@@ -137,9 +157,7 @@ public class SampleApp {
     private String fixHmac(String base64Hmac) {
         String hmac2 = base64Hmac;
 
-        hmac2 = hmac2.replace("/", "_")
-        .replace("+", "-")
-        .replace("=", "");
+        hmac2 = hmac2.replace("/", "_").replace("+", "-").replace("=", "");
 
         return hmac2;
     }
