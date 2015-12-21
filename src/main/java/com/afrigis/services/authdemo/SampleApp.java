@@ -19,7 +19,7 @@ import org.apache.commons.codec.binary.Base64;
  * </p>
  *
  */
-public class App {
+public class SampleApp {
     private static final Charset UTF8 = Charset.forName("UTF-8");
     
     /**
@@ -47,7 +47,7 @@ public class App {
 
     public static void main(String[] args) {
         String userInput = "Hatfield, Pretoria";
-        App mainApp = new App();
+        SampleApp mainApp = new SampleApp();
         String fulLUrl = mainApp.buildUrl(userInput);
         System.out.println("Full URL:\n" + fulLUrl);
     }
